@@ -28,15 +28,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.PanelStatus)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PanelDefinition)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PanelFile)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PanelName)
             </td>
@@ -47,7 +47,13 @@
                 @Html.DisplayFor(modelItem => item.PanelDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.PanelFile)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.PanelStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelDefinition)
             </td>
             <td>
                 <a asp-action="Confirmation" asp-route-id="@item.Panelid">Onayla</a> |

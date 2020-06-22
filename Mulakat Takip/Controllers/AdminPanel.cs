@@ -34,11 +34,12 @@ namespace Mulakat_Takip.Controllers
             _context = context;
         }
         // GET: AdminPanel
-        public async Task<IActionResult> Index(int? id)
+        //int? id
+        public async Task<IActionResult> Index()
         {
             var P_job = from e in _context.PanelOperations
                         select e;
-            GlobalVar.UserId = id.ToString();
+            //GlobalVar.UserId = id.ToString();
 
             return View(P_job);
         }
@@ -55,9 +56,21 @@ namespace Mulakat_Takip.Controllers
         //}
 
         // GET: AdminPanel/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var panelOperations = await _context.PanelOperations
+                .FirstOrDefaultAsync(m => m.Panelid == id);
+            if (panelOperations == null)
+            {
+                return NotFound();
+            }
+
+            return View(panelOperations);
         }
 
         // GET: AdminPanel/Create
@@ -133,24 +146,32 @@ namespace Mulakat_Takip.Controllers
         }
 
         // GET: AdminPanel/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var panelOperations = await _context.PanelOperations
+                .FirstOrDefaultAsync(m => m.Panelid == id);
+            if (panelOperations == null)
+            {
+                return NotFound();
+            }
+
+            return View(panelOperations);
         }
 
-        // POST: AdminPanel/Delete/5
-        [HttpPost]
+        // POST: PanelOperations/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var panelOperations = await _context.PanelOperations.FindAsync(id);
+            _context.PanelOperations.Remove(panelOperations);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

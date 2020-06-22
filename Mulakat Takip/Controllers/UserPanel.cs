@@ -65,6 +65,7 @@ namespace Mulakat_Takip.Controllers
                 //    panelOperations.PanelFile.CopyTo(target);
                 //    objfiles.DataFiles = target.ToArray();
                 //}
+                panelOperations.UserId = Convert.ToInt32(GlobalVar.UserId);
                 _context.Add(panelOperations);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
