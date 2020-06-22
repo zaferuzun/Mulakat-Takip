@@ -29,15 +29,22 @@ namespace Mulakat_Takip.Database
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Users users)
+        public async Task<IActionResult> Login(Users G_users)
         {
-            if (ModelState.IsValid)
+            var obj = _context.Users.Where(a => a.UserName == G_users.UserName && a.UserPassword == G_users.UserPassword).FirstOrDefault();
+            if (obj != null)
             {
-                _context.Add(users);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (obj.UserAuthorization)
+                {
+                    return RedirectToAction("Index", "AdminPanel", new { @id = obj.UserId });
+                }
+                return RedirectToAction("Index", "UserPanel", new { @id = obj.UserId });
             }
-            return View(users);
+            else
+            {
+                ModelState.AddModelError("", "Kullanıcı adı veya şifreyi yanlış girdiniz.");
+            }
+            return View(G_users);
         }
 
         // GET: Users/Create
@@ -51,15 +58,15 @@ namespace Mulakat_Takip.Database
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(Users users)
+        public async Task<IActionResult> Register(Users G_users)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
+                _context.Add(G_users);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Login", "Users");
             }
-            return View(users);
+            return View(G_users);
         }
         private bool UsersExists(int id)
         {

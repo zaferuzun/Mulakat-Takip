@@ -14,6 +14,7 @@ namespace Mulakat_Takip.Database
         {
         }
         public DbSet<Users> Users { get; set; }
+        public DbSet<PanelOperations> PanelOperations { get; set; }
 
     }
 }
