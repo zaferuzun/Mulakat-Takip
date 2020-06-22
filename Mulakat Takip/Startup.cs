@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mulakat_Takip.Database;
 
 namespace Mulakat_Takip
 {
@@ -24,6 +26,9 @@ namespace Mulakat_Takip
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //Install-Package Microsoft.EntityFrameworkCore.SqlServer
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
