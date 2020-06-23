@@ -59,7 +59,7 @@ namespace Mulakat_Takip.Controllers
         // POST: UserPanel/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PanelOperations G_panelOperations, IFormFile G_PanelFile)
+        public async Task<IActionResult> Create(PanelOperations G_panelOperations, IFormFile PanelFile)
         {//
             //PanelOperations panelOperations
             if (ModelState.IsValid)
@@ -70,19 +70,27 @@ namespace Mulakat_Takip.Controllers
                 //    objfiles.DataFiles = target.ToArray();
                 //}
                 //IFormFile ImageFile = panelOperations.Files;
+                //if(PanelFile==null)
+                //{
+                //    ModelState.AddModelError("ModelOnly", "Dosya seçiniz.");
+
+                //}
+                IFormFile P_PanelFile = PanelFile;
+
                 G_panelOperations.UserId = Convert.ToInt32(GlobalVar.UserId);
-                var P_filename = ContentDispositionHeaderValue.Parse(G_PanelFile.ContentDisposition).FileName.Trim('"');
-                var P_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", G_PanelFile.FileName);
+
+                var P_filename = ContentDispositionHeaderValue.Parse(P_PanelFile.ContentDisposition).FileName.Trim('"');
+                var P_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", P_PanelFile.FileName);
                 using (System.IO.Stream stream = new FileStream(P_path, FileMode.Create))
                 {
-                    await G_PanelFile.CopyToAsync(stream);
+                    await P_PanelFile.CopyToAsync(stream);
                 }
                 G_panelOperations.PanelFile = P_filename;
 
 
                 _context.Add(G_panelOperations);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "UserPanel", new { @id = G_panelOperations.UserId });
             }
             return View(G_panelOperations);
             //if (files != null)
@@ -220,7 +228,7 @@ namespace Mulakat_Takip.Controllers
         //        Getfile.CopyTo(new FileStream(Upload, FileMode.Create));
         //    }
         //    return View();
-        }
+        //}
         private bool PanelOperationsExists(int id)
         {
             return _context.PanelOperations.Any(e => e.Panelid == id);

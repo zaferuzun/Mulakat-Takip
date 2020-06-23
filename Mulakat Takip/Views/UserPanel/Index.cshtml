@@ -4,20 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Anasayfa</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Talep Oluştur</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th id="">
-                @Html.DisplayNameFor(model => model.PanelFile)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.PanelName)
             </th>
@@ -25,7 +19,19 @@
                 @Html.DisplayNameFor(model => model.PanelSurname)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PanelFile)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.PanelDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PanelStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PanelPostDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PanelDefinition)
             </th>
             <th></th>
         </tr>
@@ -33,29 +39,37 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.PanelFile)*@
-                    <a asp-action="Download" asp-route-id="@item.Panelid">@item.PanelFile</a>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PanelName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PanelSurname)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PanelDate)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Panelid">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Panelid">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Panelid">Delete</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelSurname)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.PanelFile)*@
+                <a asp-action="Download" asp-route-id="@item.Panelid">@item.PanelFile</a>
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelPostDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelDefinition)
+            </td>
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.Panelid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Panelid">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Panelid">Delete</a>*@
+            </td>
+        </tr>
         }
     </tbody>
 </table>

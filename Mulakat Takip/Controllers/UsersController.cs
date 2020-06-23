@@ -29,7 +29,7 @@ namespace Mulakat_Takip.Database
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Users G_users)
+        public async Task<IActionResult> Login(UsersLogin G_users)
         {
             var P_obj = _context.Users.Where(a => a.UserName == G_users.UserName && a.UserPassword == G_users.UserPassword).FirstOrDefault();
             if (P_obj != null)
