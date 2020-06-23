@@ -31,14 +31,14 @@ namespace Mulakat_Takip.Database
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(Users G_users)
         {
-            var obj = _context.Users.Where(a => a.UserName == G_users.UserName && a.UserPassword == G_users.UserPassword).FirstOrDefault();
-            if (obj != null)
+            var P_obj = _context.Users.Where(a => a.UserName == G_users.UserName && a.UserPassword == G_users.UserPassword).FirstOrDefault();
+            if (P_obj != null)
             {
-                if (obj.UserAuthorization)
+                if (P_obj.UserAuthorization)
                 {
-                    return RedirectToAction("Index", "AdminPanel", new { @id = obj.UserId });
+                    return RedirectToAction("Index", "AdminPanel", new { @id = P_obj.UserId });
                 }
-                return RedirectToAction("Index", "UserPanel", new { @id = obj.UserId });
+                return RedirectToAction("Index", "UserPanel", new { @id = P_obj.UserId });
             }
             else
             {

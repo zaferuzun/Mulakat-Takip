@@ -41,13 +41,13 @@ namespace Mulakat_Takip.Controllers
         // GET: PanelOperations
         public async Task<IActionResult> Index(int? id)
         {
-            var P_job = from e in _context.PanelOperations
+            var P_Panel = from e in _context.PanelOperations
                         where e.UserId == id
                         select e;
             GlobalVar.UserId = id.ToString();
             //var G_job = await _context.PanelOperations.FindAsync(id);
 
-            return View(P_job);
+            return View(P_Panel);
         }
 
         // GET: UserPanel/Create
@@ -59,7 +59,7 @@ namespace Mulakat_Takip.Controllers
         // POST: UserPanel/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PanelOperations panelOperations, IFormFile PanelFile)
+        public async Task<IActionResult> Create(PanelOperations G_panelOperations, IFormFile G_PanelFile)
         {//
             //PanelOperations panelOperations
             if (ModelState.IsValid)
@@ -70,21 +70,21 @@ namespace Mulakat_Takip.Controllers
                 //    objfiles.DataFiles = target.ToArray();
                 //}
                 //IFormFile ImageFile = panelOperations.Files;
-                panelOperations.UserId = Convert.ToInt32(GlobalVar.UserId);
-                var filename = ContentDispositionHeaderValue.Parse(PanelFile.ContentDisposition).FileName.Trim('"');
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", PanelFile.FileName);
-                using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
+                G_panelOperations.UserId = Convert.ToInt32(GlobalVar.UserId);
+                var P_filename = ContentDispositionHeaderValue.Parse(G_PanelFile.ContentDisposition).FileName.Trim('"');
+                var P_path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", G_PanelFile.FileName);
+                using (System.IO.Stream stream = new FileStream(P_path, FileMode.Create))
                 {
-                    await PanelFile.CopyToAsync(stream);
+                    await G_PanelFile.CopyToAsync(stream);
                 }
-                panelOperations.PanelFile = filename;
+                G_panelOperations.PanelFile = P_filename;
 
 
-                _context.Add(panelOperations);
+                _context.Add(G_panelOperations);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(panelOperations);
+            return View(G_panelOperations);
             //if (files != null)
             //{
             //    if (files.Length > 0)
@@ -121,29 +121,29 @@ namespace Mulakat_Takip.Controllers
         //}
         //    return View();
         }
-
-        public async Task<IActionResult> Download(string? filename)
+        [HttpPost]
+        public async Task<IActionResult> Download(int? G_panelId)
         {
-            //if (filename == null)
-            //    return Content("filename not present");
-            filename = "Zafer UZUN önyazı.docx";
+            string P_fileName = (from e in _context.PanelOperations
+                                where e.Panelid == G_panelId
+                                select  e.PanelFile).ToString();
 
-            var path = Path.Combine(
+            var P_path = Path.Combine(
                            Directory.GetCurrentDirectory(),
-                           "wwwroot","Files", filename);
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(path, FileMode.Open))
+                           "wwwroot","Files", P_fileName);
+            var P_memory = new MemoryStream();
+            using (var stream = new FileStream(P_path, FileMode.Open))
             {
-                await stream.CopyToAsync(memory);
+                await stream.CopyToAsync(P_memory);
             }
-            memory.Position = 0;
-            return File(memory, GetContentType(path), Path.GetFileName(path));
+            P_memory.Position = 0;
+            return File(P_memory, GetContentType(P_path), Path.GetFileName(P_path));
         }
-        private string GetContentType(string path)
+        private string GetContentType(string G_path)
         {
-            var types = GetMimeTypes();
-            var ext = Path.GetExtension(path).ToLowerInvariant();
-            return types[ext];
+            var P_types = GetMimeTypes();
+            var P_ext = Path.GetExtension(G_path).ToLowerInvariant();
+            return P_types[P_ext];
         }
 
         private Dictionary<string, string> GetMimeTypes()
@@ -205,21 +205,21 @@ namespace Mulakat_Takip.Controllers
             }
         }
 
-        public IActionResult Deneme()
-        {
-            return View();
-        }
+        //public IActionResult Deneme()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Deneme(IFormFile Getfile)
-        {
-            string fileName = Guid.NewGuid().ToString();
-            if (Getfile != null)
-            {
-                var Upload = Path.Combine(_environment.WebRootPath, "Belgeler", fileName);
-                Getfile.CopyTo(new FileStream(Upload, FileMode.Create));
-            }
-            return View();
+        //[HttpPost]
+        //public async Task<IActionResult> Deneme(IFormFile Getfile)
+        //{
+        //    string fileName = Guid.NewGuid().ToString();
+        //    if (Getfile != null)
+        //    {
+        //        var Upload = Path.Combine(_environment.WebRootPath, "Belgeler", fileName);
+        //        Getfile.CopyTo(new FileStream(Upload, FileMode.Create));
+        //    }
+        //    return View();
         }
         private bool PanelOperationsExists(int id)
         {

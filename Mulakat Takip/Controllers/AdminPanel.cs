@@ -37,11 +37,11 @@ namespace Mulakat_Takip.Controllers
         //int? id
         public async Task<IActionResult> Index()
         {
-            var P_job = from e in _context.PanelOperations
+            var P_Panel = from e in _context.PanelOperations
                         select e;
             //GlobalVar.UserId = id.ToString();
 
-            return View(P_job);
+            return View(P_Panel);
         }
         //public void OrnekPost(int? id)
         //{
@@ -56,58 +56,58 @@ namespace Mulakat_Takip.Controllers
         //}
 
         // GET: AdminPanel/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? G_id)
         {
-            if (id == null)
+            if (G_id == null)
             {
                 return NotFound();
             }
 
-            var panelOperations = await _context.PanelOperations
-                .FirstOrDefaultAsync(m => m.Panelid == id);
-            if (panelOperations == null)
+            var P_panelOperations = await _context.PanelOperations
+                .FirstOrDefaultAsync(m => m.Panelid == G_id);
+            if (P_panelOperations == null)
             {
                 return NotFound();
             }
 
-            return View(panelOperations);
+            return View(P_panelOperations);
         }
 
-        // GET: AdminPanel/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        //// GET: AdminPanel/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        // POST: AdminPanel/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //// POST: AdminPanel/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         // GET: AdminPanel/Edit/5
-        public async Task<IActionResult> Confirmation(int? id)
+        public async Task<IActionResult> Confirmation(int? G_id)
         {
-            if (id == null)
+            if (G_id == null)
             {
                 return NotFound();
             }
 
-            var panelOperations = await _context.PanelOperations.FindAsync(id);
-            if (panelOperations == null)
+            var P_panelOperations = await _context.PanelOperations.FindAsync(G_id);
+            if (P_panelOperations == null)
             {
                 return NotFound();
             }
-            return View(panelOperations);
+            return View(P_panelOperations);
         }
 
         // POST: PanelOperations/Edit/5
@@ -115,9 +115,9 @@ namespace Mulakat_Takip.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Confirmation(int id, PanelOperations panelOperations)
+        public async Task<IActionResult> Confirmation(int G_id, PanelOperations G_panelOperations)
         {
-            if (id != panelOperations.Panelid)
+            if (G_id != G_panelOperations.Panelid)
             {
                 return NotFound();
             }
@@ -127,11 +127,11 @@ namespace Mulakat_Takip.Controllers
                 try
                 {
                     var P_panel = (from e in _context.PanelOperations
-                                   where e.Panelid == id
+                                   where e.Panelid == G_id
                                    select e).ToList();
 
-                    P_panel[0].PanelStatus = panelOperations.PanelStatus;
-                    P_panel[0].PanelDefinition = panelOperations.PanelDefinition;
+                    P_panel[0].PanelStatus = G_panelOperations.PanelStatus;
+                    P_panel[0].PanelDefinition = G_panelOperations.PanelDefinition;
                     PanelOperations P_pan = P_panel[0];
                     _context.Update(P_pan);
                     await _context.SaveChangesAsync();
@@ -142,25 +142,25 @@ namespace Mulakat_Takip.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(panelOperations);
+            return View(G_panelOperations);
         }
 
         // GET: AdminPanel/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? G_id)
         {
-            if (id == null)
+            if (G_id == null)
             {
                 return NotFound();
             }
 
-            var panelOperations = await _context.PanelOperations
-                .FirstOrDefaultAsync(m => m.Panelid == id);
-            if (panelOperations == null)
+            var P_panelOperations = await _context.PanelOperations
+                .FirstOrDefaultAsync(m => m.Panelid == G_id);
+            if (P_panelOperations == null)
             {
                 return NotFound();
             }
 
-            return View(panelOperations);
+            return View(P_panelOperations);
         }
 
         // POST: PanelOperations/Delete/5
