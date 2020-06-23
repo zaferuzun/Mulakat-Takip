@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Mulakat_Takip.Database;
+using Mulakat_Takip.Models;
 
 namespace Mulakat_Takip
 {
@@ -22,6 +23,7 @@ namespace Mulakat_Takip
 
         public IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -29,6 +31,11 @@ namespace Mulakat_Takip
             //Install-Package Microsoft.EntityFrameworkCore.SqlServer
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseContext")));
+
+            //var emailConfig = Configuration
+            //        .GetSection("EmailConfiguration")
+            //        .Get<EmailConfiguration>();
+            //        services.AddSingleton(emailConfig);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

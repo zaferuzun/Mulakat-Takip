@@ -24,10 +24,16 @@
                 </select>
                 <span asp-validation-for="PanelStatus" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <label asp-for="PanelDefinition" class="control-label"></label>
                 <input asp-for="PanelDefinition" class="form-control" />
                 <span asp-validation-for="PanelDefinition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PanelPostDate" class="control-label"></label>
+                <input asp-for="PanelPostDate" class="form-control" required="required" />
+                <span asp-validation-for="PanelPostDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

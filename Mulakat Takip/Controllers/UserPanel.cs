@@ -129,13 +129,14 @@ namespace Mulakat_Takip.Controllers
         //}
         //    return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> Download(int? G_panelId)
+        public async Task<IActionResult> Download(int id)
         {
-            string P_fileName = (from e in _context.PanelOperations
-                                where e.Panelid == G_panelId
-                                select  e.PanelFile).ToString();
+            int G_panelId= Convert.ToInt32(id);
 
+            var P_file = (from e in _context.PanelOperations
+                                where e.Panelid == G_panelId
+                                select  e.PanelFile).ToList();
+            string P_fileName = P_file[0];
             var P_path = Path.Combine(
                            Directory.GetCurrentDirectory(),
                            "wwwroot","Files", P_fileName);

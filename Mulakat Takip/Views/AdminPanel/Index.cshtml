@@ -31,6 +31,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.PanelDefinition)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PanelPostDate)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,13 +50,17 @@
                 @Html.DisplayFor(modelItem => item.PanelDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PanelFile)
+                @*@Html.DisplayFor(modelItem => item.PanelFile)*@
+                <a asp-controller="UserPanel" asp-action="Download" asp-route-id="@item.Panelid">@item.PanelFile</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PanelStatus)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PanelDefinition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PanelPostDate)
             </td>
             <td>
                 <a asp-action="Confirmation" asp-route-id="@item.Panelid">Onayla</a> |

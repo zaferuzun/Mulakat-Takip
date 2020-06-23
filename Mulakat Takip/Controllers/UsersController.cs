@@ -36,7 +36,7 @@ namespace Mulakat_Takip.Database
             {
                 if (P_obj.UserAuthorization)
                 {
-                    return RedirectToAction("Index", "AdminPanel", new { @id = P_obj.UserId });
+                    return RedirectToAction("Index", "AdminPanel"/*, new { @id = P_obj.UserId }*/);
                 }
                 return RedirectToAction("Index", "UserPanel", new { @id = P_obj.UserId });
             }
