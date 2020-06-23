@@ -15,7 +15,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
-            <th>
+            <th id="">
                 @Html.DisplayNameFor(model => model.PanelFile)
             </th>
             <th>
@@ -31,29 +31,57 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PanelFile)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PanelName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PanelSurname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PanelDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Panelid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Panelid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Panelid">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.PanelFile)*@
+                    <a asp-action="Download" asp-route-id="@item.PanelFile">@item.PanelFile</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PanelName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PanelSurname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PanelDate)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Panelid">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Panelid">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Panelid">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@section Scripts {
+    <script>
+
+    $(function () {
+        $("#DownloadAttachment").click(function () {
+            var date1 = document.getElementById("DownloadAttachment").value;
+
+            $.ajax(
+            {
+                url: '@Url.Action("Download", "UserPanel")',
+                contentType: 'application/json; charset=utf-8',
+                datatype: 'json',
+                data: {
+                    studentId: date1
+                },
+                type: "POST",
+                success: function () {
+                    window.location = '@Url.Action("Download", "UserPanel", new { id= "Zafer UZUN önyazı.docx" })';
+                }
+            });
+
+        });
+    });
+    </script>
+
+}

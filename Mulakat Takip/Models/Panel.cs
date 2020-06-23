@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,9 @@ namespace Mulakat_Takip.Models
         public string PanelSurname { get; set; }
         public string PanelStatus { get; set; }
         public string PanelDefinition { get; set; }
+        //public IFormFile Files { get; set; }
         public DateTime PanelDate { get; set; }
+
         
     }
 }

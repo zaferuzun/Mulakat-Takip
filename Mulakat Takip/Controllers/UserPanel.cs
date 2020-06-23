@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +31,12 @@ namespace Mulakat_Takip.Controllers
             }
         }
         private readonly DatabaseContext _context;
+        private readonly IHostingEnvironment _environment;
 
-        public UserPanel(DatabaseContext context)
+        public UserPanel(DatabaseContext context, IHostingEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
         // GET: PanelOperations
         public async Task<IActionResult> Index(int? id)
@@ -55,7 +59,7 @@ namespace Mulakat_Takip.Controllers
         // POST: UserPanel/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PanelOperations panelOperations)
+        public async Task<IActionResult> Create(PanelOperations panelOperations, IFormFile PanelFile)
         {//
             //PanelOperations panelOperations
             if (ModelState.IsValid)
@@ -65,7 +69,17 @@ namespace Mulakat_Takip.Controllers
                 //    panelOperations.PanelFile.CopyTo(target);
                 //    objfiles.DataFiles = target.ToArray();
                 //}
+                //IFormFile ImageFile = panelOperations.Files;
                 panelOperations.UserId = Convert.ToInt32(GlobalVar.UserId);
+                var filename = ContentDispositionHeaderValue.Parse(PanelFile.ContentDisposition).FileName.Trim('"');
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", PanelFile.FileName);
+                using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    await PanelFile.CopyToAsync(stream);
+                }
+                panelOperations.PanelFile = filename;
+
+
                 _context.Add(panelOperations);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -106,6 +120,47 @@ namespace Mulakat_Takip.Controllers
             //    }
         //}
         //    return View();
+        }
+
+        public async Task<IActionResult> Download(string? filename)
+        {
+            //if (filename == null)
+            //    return Content("filename not present");
+            filename = "Zafer UZUN önyazı.docx";
+
+            var path = Path.Combine(
+                           Directory.GetCurrentDirectory(),
+                           "wwwroot","Files", filename);
+            var memory = new MemoryStream();
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+            }
+            memory.Position = 0;
+            return File(memory, GetContentType(path), Path.GetFileName(path));
+        }
+        private string GetContentType(string path)
+        {
+            var types = GetMimeTypes();
+            var ext = Path.GetExtension(path).ToLowerInvariant();
+            return types[ext];
+        }
+
+        private Dictionary<string, string> GetMimeTypes()
+        {
+            return new Dictionary<string, string>
+            {
+                {".txt", "text/plain"},
+                {".pdf", "application/pdf"},
+                {".doc", "application/vnd.ms-word"},
+                {".docx", "application/vnd.ms-word"},
+                {".xls", "application/vnd.ms-excel"},
+                {".png", "image/png"},
+                {".jpg", "image/jpeg"},
+                {".jpeg", "image/jpeg"},
+                {".gif", "image/gif"},
+                {".csv", "text/csv"}
+            };
         }
 
         // GET: UserPanel/Edit/5
@@ -150,6 +205,22 @@ namespace Mulakat_Takip.Controllers
             }
         }
 
+        public IActionResult Deneme()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Deneme(IFormFile Getfile)
+        {
+            string fileName = Guid.NewGuid().ToString();
+            if (Getfile != null)
+            {
+                var Upload = Path.Combine(_environment.WebRootPath, "Belgeler", fileName);
+                Getfile.CopyTo(new FileStream(Upload, FileMode.Create));
+            }
+            return View();
+        }
         private bool PanelOperationsExists(int id)
         {
             return _context.PanelOperations.Any(e => e.Panelid == id);
