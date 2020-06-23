@@ -4,45 +4,50 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h1>Talep Sil</h1>
 
-<h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>PanelOperations</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PanelFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PanelFile)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PanelName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PanelName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PanelSurname)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PanelSurname)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PanelFile)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.PanelFile)*@
+            <a asp-controller="UserPanel" asp-action="Download" asp-route-id="@Model.Panelid">@Model.PanelFile</a>
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PanelDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PanelDate)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PanelStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PanelStatus)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PanelPostDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PanelPostDate)
+        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="Panelid" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |

@@ -4,45 +4,50 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Talep Detayları</h1>
 
 <div>
-    <h4>PanelOperations</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PanelFile)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PanelFile)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PanelName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PanelName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PanelSurname)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PanelSurname)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PanelFile)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.PanelFile)*@
+            <a asp-controller="UserPanel" asp-action="Download" asp-route-id="@Model.Panelid">@Model.PanelFile</a>
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PanelDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PanelDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PanelStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PanelStatus)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PanelPostDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PanelPostDate)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Panelid">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a href="javascript:void(0);" onclick="history.go(-1);">Geri</a>
 </div>

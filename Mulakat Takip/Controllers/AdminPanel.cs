@@ -183,14 +183,11 @@ namespace Mulakat_Takip.Controllers
             try
             {
                 // Credentials
+                var P_user = (from e in _context.Users
+                               where e.UserId == G_panelOperations.UserId
+                               select e).ToList();
                 var credentials = new NetworkCredential("mulakatmail123@gmail.com", "123456789mulakat");
-                // Mail message
-                //string P_message = "Sayın "+  + G_panelOperations.PanelSurname +",\n"+
-                //                   G_panelOperations.PanelDate+" tarihinde oluşturduğunuz talep doğrultusunda "+
-                //                   G_panelOperations.PanelPostDate+" tarihinde " + G_panelOperations.PanelStatus+
-                //                   " yanıtı verilmiştir."+ "Açıklama "+G_panelOperations.PanelDefinition+
-                //                   " İyi Çalışmalar \n"+
-                //                   "Admin";
+
                 string P_message = "Sayın " + G_panelOperations.PanelName +" " + G_panelOperations.PanelSurname +",";
                 P_message += "<br /><br />"+ G_panelOperations.PanelDate + " tarihinde oluşturduğunuz talep doğrultusunda " ;
                 P_message += G_panelOperations.PanelPostDate + " tarihinde " + G_panelOperations.PanelStatus;
@@ -198,7 +195,7 @@ namespace Mulakat_Takip.Controllers
                 P_message += "<br /><br /> İyi Çalışmalar ";
                 P_message += "<br /><br /> Admin ";
 
-                string P_toMail = "";
+                string P_toMail = P_user[0].UserEmail;
                 var mail = new MailMessage()
                 {
                     From = new MailAddress("mulakatmail123@gmail.com"),
@@ -206,7 +203,7 @@ namespace Mulakat_Takip.Controllers
                     Body = P_message
                 };
                 mail.IsBodyHtml = true;
-                mail.To.Add(new MailAddress("mulakatmail123@gmail.com"));
+                mail.To.Add(new MailAddress(P_toMail));
                 // Smtp client
                 var client = new SmtpClient()
                 {
