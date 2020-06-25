@@ -36,6 +36,11 @@ namespace Mulakat_Takip
             //        .GetSection("EmailConfiguration")
             //        .Get<EmailConfiguration>();
             //        services.AddSingleton(emailConfig);
+            //Install-Package jsreport.Binary -Version 2.7.1
+            services.AddJsReport(new LocalReporting()
+            .UseBinary(JsReportBinary.GetBinary())
+            .AsUtility()
+            .Create());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
